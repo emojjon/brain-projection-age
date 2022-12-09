@@ -7,8 +7,10 @@ The basic case is to feed the model two channels for each projection, the mean i
 I have trained variants of this model on structural T1 brain volumes from UK biobank.
 
 ## Usage
-As this has very much been code in flux (and Flux as it happens), I foresee that it might not be trivial to run. Nevertheless I have tried to clean up the code
+As this has very much been code in flux (and `Flux` as it happens), I foresee that it might not be trivial to run. Nevertheless I have tried to clean up the code
 and provide comments in markup as well as inside the code itself and will below attempt to explain how it's meant to be used and what assumptions have been made.
+
+The data is assumed to be volumes of size (or padded to) 208⨯256⨯256 voxels contained in (possibly gzip-compressed) nifti files.
 
 The notebook is meant to be served from a jupyter server (either notebook or lab), with a Julia 1.6 kernel. It is likely that later versions of Julia will also run
 the code. It will create a Julia environment to which all dependencies need to be added. The notebook will also attempt to do that, but in case it doesn't work, manual
