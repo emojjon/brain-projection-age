@@ -12,7 +12,7 @@ and provide comments in markup as well as inside the code itself and will below 
 
 The data is assumed to be volumes of size (or padded to) 208⨯256⨯256 voxels contained in (possibly gzip-compressed) nifti files.
 
-The notebook is meant to be served from a jupyter server (either notebook or lab), with a Julia 1.6 kernel. It is likely that later versions of Julia will also run
+The notebook is meant to be served from a jupyter server (either notebook or lab), with a [Julia](https://julialang.org/downloads) [1.6 kernel](https://julialang.github.io/IJulia.jl/stable/manual/installation/#Installing-additional-Julia-kernels). It is likely that later versions of Julia will also run
 the code. It will create a Julia environment to which all dependencies need to be added. The notebook will also attempt to do that, but in case it doesn't work, manual
 intervention could be required.
 
