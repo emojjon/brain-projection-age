@@ -68,5 +68,6 @@ args=("models/model_channel_toggle.with_do_in_dense.jl", ([1, 2, 3, 4, 5, 6],), 
 ```
 #### `kwargs-definition`
 This is a dictionary of keyword arguments for the `train_and_evaluate`. This could be left empty or the key `:identifier` could be assigned a string with extra 
-information to insert in filenames associated with this run. Note that said string should not violate any filename conventions by containing slashes, null-characters, 
+information to insert in filenames associated with the run, though it is not necessary for the uniqueness of filenames alone. Note that said string should not violate 
+any filename conventions by containing slashes, null-characters, 
 wildcard characters et.c.
