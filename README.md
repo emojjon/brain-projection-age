@@ -24,3 +24,49 @@ unnecessary recalculation.
 
 The section "Main procedure" is intended to be easy enough to follow for someone to try out modifications or to add extra cells to experiment in. Should one want to add
 training sessions in a file for use with the `runfromfile` function, the syntax is explained below.
+
+### Job format
+Each line (that will run a job, otherwise comments are accepted and ignored) must conform to this structure:
+```
+lineno args-definition kwargs-definition
+```
+These three parts are separated by whitespace. Note that whitespace may also be allowed within the parts.
+
+#### `lineno`
+The `lineno` is an integer. It's currently not used (but still compulsory), but is intended to be used for such things as giving a determined gpu assignment for each job. Otherwise every process running `runfromfile` will always consume the first job in the file.
+#### `args-definition`
+This part is intended to give arguments to the `train_and_evaluate` function. As such it should be a valid Julia expression of the form:
+```
+args = (modelfile, modelarguments, modelmodifications, hyperparameters)
+```
+The `modelfile` argument is the filename where the julia code for the model resides. The `modelarguments` is a collection (e.g. tuple) of arguments for the model. The
+of the models presently provided here only the `channel_toggle` models use this mechanism. They should be provided with a collection of numbers representing what 
+channels should be used.
+
+The `modelmodifications` is a tuple of functions that will be called 
+with the model as the only argument, intended to make it possible to modify the model on the fly. These functions would typically be small anonymous functions that call
+the helper function `changelayers`. Here is an example of such a function:
+```
+model -> changelayers(model, (Flux.Dropout,), ((:p => 0.7),))
+```
+The second argument to `changelayers` is a tuple of all the layertypes in the model that should be adressed. In this case only dropout layers. The third argument is a 
+tuple of all the modifications to be made to said layers. These can be expressed as `Pair`s of valid fieldnames for the layers in question and values to assign to said 
+field names. Alternatively, such a modifications can also be expressed as a function taking the layer to modify as its only argument. Note that one call to 
+`changelayers` can apply several changes to layers of several types. For better granularity, several modifications, each calling `changelayers` could be given in the 
+`modelmodifications` tuple.
+
+The `hyperparameters` argument is a dictionary (could be empty, but must never-the-less be given) with hyperparameters and their values. 
+Currently only `:lr` meaning learning rate is used. If not in the dictionary it defaults to 0.003.
+
+Below is a complete `args-definition`:
+```
+                        model filename                  arguments for the model           modifications (in this case 1) to apply to model     hyperparameters
+      ╭───────────────────────┴───────────────────────╮  ╭─────────┴─────────╮  ╭───────────────────────────────┴──────────────────────────────╮  ╭──┴─╮
+args=("models/model_channel_toggle.with_do_in_dense.jl", ([1, 2, 3, 4, 5, 6],), (model -> changelayers(model, (Flux.Dropout,), ((:p => 0.7),)),), Dict())
+                                                                                                              ╰──────┬──────╯  ╰──────┬─────╯
+                                                                                                           layer types affected    change(s)
+```
+#### `kwargs-definition`
+This is a dictionary of keyword arguments for the `train_and_evaluate`. This could be left empty or the key `:identifier` could be assigned a string with extra 
+information to insert in filenames associated with this run. Note that said string should not violate any filename conventions by containing slashes, null-characters, 
+wildcard characters et.c.
