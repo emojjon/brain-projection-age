@@ -16,7 +16,7 @@ The notebook is meant to be served from a jupyter server (either notebook or lab
 the code. It will create a Julia environment to which all dependencies need to be added. The notebook will also attempt to do that, but in case it doesn't work, manual
 intervention could be required.
 
-Some adaptations to your computing environment also has to be made. Specifically, under the heading "Commandline Interface" a string of arguments such as is typically
+Some adaptations in order to fit into your computing environment, also has to be made. Specifically, under the heading "Commandline Interface" a string of arguments such as is typically
 given on the commandline to a shell command, can be entered in the first cell of this section. The second cell (or it's output) will provide an explanation. Furthermore,
 under the heading "Hardcoded Paths" the paths of the directory with data and the csv file identifying each volume and listing age and gender (as 0 or 1) should be
 adjusted. The directory with brain volumes should be writable, because all two dimensional images derived from the volumes, are cached in a hidden directory to obviate
